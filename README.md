@@ -51,7 +51,7 @@ mask = onevol!=0  # Binary mask
 2. Create all possible spheres within the mask
 
 We need 2 important values: _voxel size_ (you can check that on your image header), and _sphere radius_
-My voxel size is is 2x2x2, and I want 5mm radius spheres 
+My voxel size is 2x2x2, and I want 5mm radius spheres 
 
 ```
 sphere_radius = 5  # Adjust the radius as needed
