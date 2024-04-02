@@ -113,7 +113,6 @@ We also need a model in pandas DataFrame format, read from whatever source. In m
 modelpath = [path to my model]
 
 model = pd.read_excel(modelpath)
-
 ```
 IMPORTANT: the model should be a n X n where n is your number of trials. The columns and rows should be ordered
 as they were ordered in the functional image. 
@@ -155,6 +154,4 @@ model_simil = get_model_sim_allin(
     labels,
     jobs=36
 )
-
-
 ```
