@@ -29,7 +29,7 @@ __Imports__
 ```
 import pandas as pd, numpy as np
 import nibabel as nib
-from simplyRSA.searchligh import *
+from simplyRSA.searchlight import *
 ```
 
 1. Read your functional images and create a brain mask
