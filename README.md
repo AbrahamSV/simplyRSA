@@ -141,7 +141,7 @@ sims_to_nifti(
     )
 ```
 
-3.a. Optionally, you can run steps 3 and 4 all in one by using _get_model_sim_allin_. This is the recommended way of
+3.a. Alternatively, you can run steps 3 and 4 all in one by using _get_model_sim_allin_. This is the recommended way of
 running it, since it is way more efficient, and consumes way less memory. 
 
 In this case, we need the brain data, and spheres info. Other than that, it runs like in the 2 steps above. 
