@@ -344,7 +344,7 @@ def sims_to_nifti(img_path,similarities,prefix):
 
     # Iterate over the dictionary and assign correlation values to the empty array
     for center_coords, correlation_value in similarities.items():
-        empty_data[center_coords] = correlation_value
+        empty_data[center_coords] = correlation_value[0]
 
     # Create a new NIfTI image using the empty array and affine from the original image
     new_img = nib.Nifti1Image(empty_data, affine=brain_img.affine)
