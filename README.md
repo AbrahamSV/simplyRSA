@@ -17,9 +17,9 @@ If you don't have them installed, simply run:
 
 __Installation__
 
-1. Download the package
+1. Download the tar.gz file
 2. Go to the directory in which it was downloaded
-3. Run ```pip install [package_file_name]```
+3. Run ```pip install simplyRSA-[ver].tar.gz```
 
 ## Usage
 
