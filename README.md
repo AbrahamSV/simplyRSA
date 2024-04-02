@@ -65,5 +65,5 @@ spheres_info = searchlight_spheres_parallel(mask, sphere_radius, voxel_size_mm, 
 
 The _jobs_ argument specifies how many CPUs are used in parallel for this (hence the name)
 
-If you are unsure of how many CPUs your PC has, by providing _-1_ you tell the function to use ALL 
+If you are unsure of how many CPUs your PC has, by providing _-1_ you tell the function to use ALL. 
 It defaults to 5, which is a number most PCs will have. 
