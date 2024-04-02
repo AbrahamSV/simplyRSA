@@ -1,5 +1,7 @@
 # simplyRSA
-Simple package to run RSA analyses
+Simple package to run RSA analyses on fMRI data
+Currently, it only contains 1 module for RSA searhclight.
+Some features are missing, like cross-run validation
 
 ### Setup
 
@@ -23,8 +25,17 @@ __Installation__
 
 Here is a simple example on how to use the _searchlight_ module:
 
+__Imports__
 ```
+import pandas as pd, numpy as np
+import nibabel as nib
 from simplyRSA.searchligh import *
+```
 
+1. Read your functional images and create a brain mask
+Here, I'm reading a .BRIK file from AFNI, but you can read other files (like Nifti).
 
+```
+brikpath = [path to my .BRIK file]
+brikdata = nib.load(brikpath).get_fdata()
 ```
