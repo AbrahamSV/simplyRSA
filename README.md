@@ -32,7 +32,7 @@ import nibabel as nib
 from simplyRSA.searchlight import *
 ```
 
-1. Read your functional images and create a brain mask
+1. Read your functional images and create a brain mask.
 Here, I'm reading a .BRIK file from AFNI, but you can read other files (like Nifti).
 The important thing is that the resulting brain image is a 4d image with 3 spatial dimensions
 and a 4th dimensions representing volumes (or trials)
@@ -52,7 +52,7 @@ mask = onevol!=0  # Binary mask
 ```
 2. Create all possible spheres within the mask
 
-We need 2 important values: _voxel size_ (you can check that on your image header), and _sphere radius_
+We need 2 important values: _voxel size_ (you can check that on your image header), and _sphere radius_.
 My voxel size is 2x2x2, and I want 5mm radius spheres 
 
 ```
