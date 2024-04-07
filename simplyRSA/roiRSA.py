@@ -92,8 +92,8 @@ def bootstrap_rdm(brain_rdm, model, bts_iters=100000, corr_method="spearman", jo
         return iter_df
     
     # Prallelise the function
-    results = Parallel(n_jobs=5)(delayed(
-        bootstrap_iter)(iter) for iter in tqdm(range(bts_iters), desc="Getting ROI masks")
+    results = Parallel(n_jobs=jobs)(delayed(
+        bootstrap_iter)(iter) for iter in tqdm(range(bts_iters), desc="Computing permutations")
         )
 
     bootstrap_df = pd.concat(results)   # df with bootstrap results
@@ -243,7 +243,7 @@ def roi_model_similarities(brain_rdms, model, jobs=5, dist_method="spearman"):
 
     # Parallelize the processing of spheres
     results = Parallel(n_jobs=jobs)(
-        delayed(compute_roi)(roi) for roi in tqdm(brain_rdms.keys(), desc="Processing spheres"))
+        delayed(compute_roi)(roi) for roi in tqdm(brain_rdms.keys(), desc="Calculating similarities"))
 
     # Create a dictionary with sphere center coordinates as keys and similarity values as values
     similarity_values = pd.concat(results)
