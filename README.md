@@ -1,7 +1,6 @@
 # simplyRSA
 Simple package to run RSA analyses on fMRI data.
 Currently, it only contains 2 modules for RSA searhclight, and ROI-based RSA.
-Some features are missing, like cross-run validation
 
 ## Setup
 
