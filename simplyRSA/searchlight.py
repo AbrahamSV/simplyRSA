@@ -302,6 +302,7 @@ def get_model_sim_allin(brain_data, spheres_data, model, labels_data, dist_metho
         "cosine": sp_distance.cosine,
         "mahalanobis": sp_distance.mahalanobis,
         "minkowski": sp_distance.minkowski,
+        "pearson": stats.pearsonr,
         "spearman": stats.spearmanr,
         "kendall": stats.kendalltau
     }
