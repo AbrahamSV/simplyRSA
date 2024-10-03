@@ -226,6 +226,7 @@ def get_model_similarities(brain_rdms, model, jobs=5, dist_method="correlation")
         "cosine":sp_distance.cosine,
         "mahalanobis":sp_distance.mahalanobis,
         "minkowski":sp_distance.minkowski,
+        "pearson": stats.pearsonr,
         "spearman":stats.spearmanr,
         "kendall":stats.kendalltau
     }
