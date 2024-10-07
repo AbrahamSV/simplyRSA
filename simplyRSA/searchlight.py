@@ -77,6 +77,36 @@ def rsm(matrix, dist_method):
 
     return dists
 
+# Function to shrink RDM into smaller components
+def shrink_rdm(mat, block_size):
+    """Given a RDM, reduces it to smaller components by averaging cells 
+    within a block of given size. It assumes that trials are ordered around 
+    a sensible property that is theoretically relevant.
+
+    Args:
+        mat (DatFrame): Ordered RDM (be it brain or empirical RDM)
+        block_size (_type_): N of trials to average.
+
+    Returns:
+        DataFrame: A reduced RDM of size N of trials / block size. Each column/row
+        represents the average of N(block_size) trials
+    """
+
+    # We  first extract the numeric part of the matrix.
+    df_numeric = mat.to_numpy()  # Convert DataFrame to NumPy array
+
+    # Find the number of blocks along each dimension
+    n_blocks = df_numeric.shape[0] // block_size
+
+    # Reshape the matrix into blocks of nxn and compute the mean for each block
+    reduced_matrix = df_numeric.reshape(n_blocks, block_size, n_blocks, block_size).mean(axis=(1, 3))
+
+    # Convert the reduced matrix back into a DataFrame
+    reduced_df = pd.DataFrame(reduced_matrix)
+
+    return reduced_df
+
+
 #%% Define core functions
 
 # Utility function to get one center and neighbours
@@ -160,7 +190,7 @@ def searchlight_spheres_parallel(mask, sphere_radius, voxel_size_mm, jobs,  brai
 
 
 # To get brain RDMs for each sphere
-def get_brain_RDMs(brain_data, spheres_data, labels_data, jobs=5, dist_method="cosine"):
+def get_brain_RDMs(brain_data, spheres_data, labels_data, dist_method="cosine", jobs=5):
     """Generate representational dissimilarity matrices (RDMs) based on sphere values for each trial.
 
     Args:
@@ -205,7 +235,7 @@ def get_brain_RDMs(brain_data, spheres_data, labels_data, jobs=5, dist_method="c
     return rdm_values
 
 
-def get_model_similarities(brain_rdms, model, jobs=5, dist_method="correlation"):
+def get_model_similarities(brain_rdms, model, dist_method="spearman", jobs=5):
     """Given a dict with brain RDMs obtained in the spheres, and a model as DataFrame,
     computes the dissimilarity between brain and model for each sphere. 
 
@@ -213,7 +243,7 @@ def get_model_similarities(brain_rdms, model, jobs=5, dist_method="correlation")
         brain_rdms (dict): Dictionary with the brain RDM (DataFrame) for each sphere (3D indices)
         model (DataFrame): A DataDrame with any model (has to be prepared before-hand)
         jobs (int, optional): N of CPUs to parallelise. Defaults to 5.
-        dist_method (str, optional): Method to compute distances. Defaults to "correlation".
+        dist_method (str, optional): Method to compute distances. Defaults to "Spearman".
 
     Returns:
         dict: A dictionary with sphere center coordinates as keys, and the corr distance as values
@@ -274,7 +304,7 @@ def get_model_sim_allin(brain_data, spheres_data, model, labels_data, dist_metho
         model (DataFrame): A DataFrame with the model data. *Note: the model should follow the same order
             than that of the volumes in the functional image
         labels_data (array): List of labels for the trials.
-        dist_method (str, optional): Method to compute distances. Defaults to "correlation".
+        dist_method (str, optional): Method to compute distances. Defaults to "spearman".
         jobs (int, optional): Number of CPUs to parallelize. Defaults to 5.
 
     Returns:
