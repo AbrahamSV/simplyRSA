@@ -399,7 +399,7 @@ def get_sphere_similarity(sphere_RDM, model, sim_method="spearman"):
 
     Returns:
         float: a similarity value according to the selected method
-    """"
+    """
     # Mapper of possible distance functions
     dists_map = {
         "correlation": sp_distance.correlation,
