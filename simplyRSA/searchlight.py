@@ -356,7 +356,7 @@ def get_model_sim_allin(brain_data, spheres_data, model, labels_data, dist_metho
     return similarity_values
 
 
-# Function to compute brain RDM for a single sphere
+# Standalone Function to compute brain RDM for a single sphere
 def get_sphere_RDM(brain_data, labels_data, center, neighbors, dist_method="cosine"):
     """Given a single sphere within the brain mask, computes the brain RDM 
     according to the labels given for the trials. This is intended for doing
@@ -386,6 +386,42 @@ def get_sphere_RDM(brain_data, labels_data, center, neighbors, dist_method="cosi
     gc.collect()
 
     return center, sphere_rdm
+
+# Standalone Function to compute model similarity for a single sphere
+def get_sphere_similarity(sphere_RDM, model, sim_method="spearman"):
+    """Compute similarity for just 1 sphere. It's meant for doing further
+    computations, along with "get_sphere_RDM". 
+
+    Args:
+        sphere_RDM (DataFrame): a pandas dataframe with the sphere RDM
+        model (DataFrame): a pandas dataframe expressing an empirical model 
+        sim_method (str, optional): method to compute similarity. Defaults to "spearman".
+
+    Returns:
+        float: a similarity value according to the selected method
+    """"
+    # Mapper of possible distance functions
+    dists_map = {
+        "correlation": sp_distance.correlation,
+        "euclidean": sp_distance.euclidean,
+        "cosine": sp_distance.cosine,
+        "mahalanobis": sp_distance.mahalanobis,
+        "minkowski": sp_distance.minkowski,
+        "pearson": stats.pearsonr,
+        "spearman": stats.spearmanr,
+        "kendall": stats.kendalltau
+    }
+    
+    if sim_method in dists_map:
+        method_sim = dists_map.get(sim_method)
+    else:
+        print(f"ERROR: Invalid distance method. Possible methods are {list(dists_map.keys())}")
+        return
+
+    # Compute model similarity
+    model_similarity = method_sim(sphere_RDM.values.flatten(), model.values.flatten())
+    
+    return model_similarity
 
 
 def sims_to_nifti(img_path,similarities,prefix):
