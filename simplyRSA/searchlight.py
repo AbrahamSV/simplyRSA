@@ -7,6 +7,7 @@ from scipy import stats
 import scipy.spatial.distance as sp_distance
 from joblib import Parallel, delayed
 from tqdm import tqdm
+import gc
 from collections import namedtuple
 
 
@@ -353,6 +354,39 @@ def get_model_sim_allin(brain_data, spheres_data, model, labels_data, dist_metho
     similarity_values = {center: similarity for center, similarity in results}
 
     return similarity_values
+
+
+# Function to compute brain RDM for a single sphere
+def get_sphere_RDM(brain_data, labels_data, center, neighbors, dist_method="cosine"):
+    """Given a single sphere within the brain mask, computes the brain RDM 
+    according to the labels given for the trials. This is intended for doing
+    operations with the RDM and not run out of memory
+
+    Args:
+        brain_data (ndarray): 4D array with brain data (3D spatial dimensions and 1D temporal dimension).
+        labels_data (array): list of labels for the trials
+        center (list): coordinates of the center of the sphere
+        neighbors (ndarray): neighbor voxels of the sphere
+        dist_method (str, optional): method to compute the RDM. Defaults to "cosine".
+
+    Returns:
+        center, sphere RDM: Returns the center and the resulting RDM 
+    """
+    # Extract brain data for the sphere
+    sphere_data = [brain_data[..., vol][tuple(neighbors.T)] for vol in range(brain_data.shape[-1])]
+    
+    # Convert to DataFrame
+    sphere_df = pd.DataFrame(np.array(sphere_data).T, columns=labels_data)
+    
+    # Compute brain RDM for the sphere
+    sphere_rdm = rsm(sphere_df, dist_method)
+    
+    # Cleanup to free memory
+    del sphere_data, sphere_df
+    gc.collect()
+
+    return center, sphere_rdm
+
 
 def sims_to_nifti(img_path,similarities,prefix):
     """Given a path to the functional image and the similarities dict obtained
